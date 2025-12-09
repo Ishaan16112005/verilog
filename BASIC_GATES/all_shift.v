@@ -16,4 +16,4 @@ endmodule
  /*dynamic_shifters #(.width(8)) u_shift (
  / ...........
 )*/
-// the lines 16, 17 and 18 are for the test bench part with the dynamic input
+// lines 16, 17 and 18 are for the test bench part with the dynamic input
