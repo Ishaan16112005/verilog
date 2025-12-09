@@ -1,4 +1,4 @@
-`timescale 1ns/1ps;
+`timescale 1ns/1ps
 module tb_test;
   parameter data_width = 4;
   parameter mem_depth = 16;
