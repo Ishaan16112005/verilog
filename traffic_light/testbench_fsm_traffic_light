@@ -1,0 +1,31 @@
+`timescale 1ns/1ps
+module tb() ;
+  reg clk;
+  reg reset;
+  wire [2:0] ns_light;
+  wire [2:0] ew_light;
+  wire left;
+
+  fsm_traffic_light uut (
+    .clk(clk),
+    .reset(reset),
+    .ns_light(ns_light),
+    .ew_light(ew_light),
+    .left(left)
+  );
+  always #5 clk = ~clk;
+  initial  begin
+    clk = 0;
+    reset = 1;
+    #20 reset = 0;
+    $display("Time   \tState    \tN_S_LIGHT     \tE_W_LIGHT");
+    $monitor("0%t\t%b\t%b\t%b", $time, uut.state, ns_light, ew_light );
+
+    #1700;
+    $display("Simulation finished");
+    $finish;
+
+
+  end
+endmodule
+
