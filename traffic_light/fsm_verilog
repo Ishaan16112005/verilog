@@ -1,0 +1,72 @@
+
+module fsm_traffic_light(
+  input clk,
+  input reset,
+  output reg [2:0] ns_light,
+  output reg [2:0] ew_light,
+  output left //always on
+);
+  reg [4:0] timer; // 5-bit counter
+  reg [1:0] state;
+  parameter s0 = 2'b00, s1 = 2'b01, s2 = 2'b10, s3 = 2'b11;
+  assign left = 1'b1;
+
+  always @ (posedge clk)  begin
+    if (reset)  begin
+      state <= s0;
+      timer <= 0;
+
+
+    end else  begin
+      case(state)
+        s0 : if (timer == 29) begin
+          state <=s1;
+          timer<=0;
+        end else  begin
+          timer <= timer + 1;
+
+        end
+        s1 : if (timer == 9)  begin
+          state <= s2;
+          timer <= 0;
+
+        end else  begin
+          timer <= timer + 1;
+
+        end
+        s2 : if (timer == 29) begin
+          timer <= 0;
+          state <= s3;
+
+        end else  begin
+          timer <= timer +1;
+
+        end
+        s3 : if (timer == 9)  begin
+          state <= s1;
+          timer <= 0;
+
+        end else  begin
+          timer <= timer + 1;
+
+        end
+        default : state <= s0;
+      endcase
+
+
+    end
+
+  end
+
+  always @(*)  begin
+    case(state)
+      s0: begin ns_light = 3'b001; ew_light = 3'b100; end // NS Green, EW Red
+      s1: begin ns_light = 3'b010; ew_light = 3'b010; end // Both Yellow
+      s2: begin ns_light = 3'b100; ew_light = 3'b001; end // NS Red, EW Green
+      s3: begin ns_light = 3'b010; ew_light = 3'b010; end // Both Yellow
+      default : begin ns_light = 3'b100; ew_light = 3'b100; end
+    endcase
+  end
+
+endmodule
+
